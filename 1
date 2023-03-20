@@ -1,0 +1,83 @@
+#include <cstdlib>
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+
+int main(){
+    setlocale(0, "");
+    char new_player = 0;
+    printf("Нажмите 1 если хотите ознакомиться с правилами игры иначе нажмите 0\n");
+    scanf("%c", &new_player);
+    if(new_player == '1'){
+        printf("Правила игры:\n");
+        printf("Машина загадывает вам 4 разные цифры разделенные пробелом\n");
+        printf("Например: 1 2 3 4\n");
+        printf("Ваша задача отгадать эти цифры в правильном порядке, делая ходы\n");
+        printf("Ходы выглядят следующим образом: 1 2 5 3\n");
+        printf("В ответ на ваш ход, машина дает ответ 2/1\n");
+        printf("Первое число означает количество угаданных цифр, стоящих на своем месте\n");
+        printf("Второе число означает количество угаданных цифр, стоящих не на своем месте\n");
+    }
+    printf("\n");
+    printf("Игра началась, Удачи!\n");
+    srand(unsigned(time(0)));
+    int arr[4];
+    int answ[4];
+    int ops[10];
+    int good = 0;
+    int not_so_good = 0;
+    int help = 0;
+    for(int i = 0; i < 10; i++){
+        ops[i] = 0;
+    }
+    arr[0] = rand() % 10;
+    ops[arr[0]] = 1;
+    for(int i = 1; i < 4; i++){
+        help = rand() % 10;
+        while(ops[help]){
+            help = (help + rand() % 2 + 1) % 10;
+        }
+        arr[i] = help;
+        ops[arr[i]]++;
+    }
+    //for(int i = 0; i < 4; i++){
+    //    printf("%d ", arr[i]);
+    //}
+    //printf("\n");
+    //for(int i = 0; i < 10; i++){
+    //    printf("%d ", ops[i]);
+    //}
+    //printf("\n");
+    int score = 0;
+    while(good != 4){
+        score++;
+        good = 0;
+        not_so_good = 0;
+        for(int i = 0; i < 4; i++){
+            std::cin >> answ[i];
+            if(answ[i] == arr[i]){
+                good++;
+            }else{
+                if (ops[answ[i]]){
+                    not_so_good++;
+                }
+            }
+            
+        }
+        printf("%d/%d", good, not_so_good);
+        printf("\n");
+        
+    }
+    if (score % 10 == 1){
+        printf("Это победа! Игра заняла у вас %d ход!", score);
+        return 0;
+    }
+    if ((score % 10 > 4) || (score % 10 == 0)){
+        printf("Это победа! Игра заняла у вас %d ходов!", score);
+    }else{
+        printf("Это победа! Игра заняла у вас %d хода!", score);
+    }
+    return 0;
+}
